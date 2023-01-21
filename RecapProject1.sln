@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecapUI", "RecapUI\RecapUI.csproj", "{C5493026-7FB7-47FE-BA7D-5F32F06A9C73}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5493026-7FB7-47FE-BA7D-5F32F06A9C73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5493026-7FB7-47FE-BA7D-5F32F06A9C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5493026-7FB7-47FE-BA7D-5F32F06A9C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5493026-7FB7-47FE-BA7D-5F32F06A9C73}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9830A4E1-1761-4EB6-A74B-FA2BEDDA2043}
+	EndGlobalSection
+EndGlobal
