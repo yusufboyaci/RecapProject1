@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Recap.Core.Enum;
+using Recap.Core.Methods;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Recap.Core.Entity
 {
-    public class CoreEntity: IEntity<Guid>
+    public abstract class CoreEntity: IEntity<Guid>
     {
         NetworkFunctions networkFunctions = new NetworkFunctions();
         public CoreEntity()
