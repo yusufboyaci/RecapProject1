@@ -12,6 +12,7 @@ namespace Recap.DataAccess.Repositories.Abstract
     {
         List<T> GetAll(Expression<Func<T, bool>>? filter = null);
         T Get(Expression<Func<T, bool>> filter);
+        T Get(Guid id);
         void Add(T entity);
         void Add(List<T> entities);
         void Update(T entity);

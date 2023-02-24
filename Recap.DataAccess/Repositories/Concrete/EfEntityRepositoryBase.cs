@@ -59,6 +59,14 @@ namespace Recap.DataAccess.Repositories.Concrete
             }
         }
 
+        public TEntity Get(Guid id)
+        {
+            using (TContext context = new TContext())
+            {
+                return context.Set<TEntity>().Find(id);
+            }
+        }
+
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>>? filter = null)
         {
             using (TContext context = new TContext())
