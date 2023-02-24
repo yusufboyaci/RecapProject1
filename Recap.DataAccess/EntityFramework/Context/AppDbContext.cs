@@ -29,7 +29,7 @@ namespace Recap.DataAccess.EntityFramework.Context
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("server=localhost;port=5432;database=RecapProject1Db;uid=postgres;pwd=123");
+            optionsBuilder.UseNpgsql("Server=localhost; Port=5432; Database=RecapProject1Db; uid=postgres;pwd=123", b => b.MigrationsAssembly("RecapUI"));
             base.OnConfiguring(optionsBuilder);
         }
         public override int SaveChanges()

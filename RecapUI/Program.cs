@@ -1,7 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using Recap.DataAccess.EntityFramework.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql("Server=localhost; Port=5432; Database=RecapProject1Db; uid=postgres;pwd=123"));
 
 var app = builder.Build();
 
