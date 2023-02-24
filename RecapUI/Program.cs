@@ -1,11 +1,20 @@
 using Microsoft.EntityFrameworkCore;
+using Recap.Business.Abstract;
+using Recap.Business.Concrete;
 using Recap.DataAccess.EntityFramework.Context;
+using Recap.DataAccess.Repositories.Abstract;
+using Recap.DataAccess.Repositories.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql("Server=localhost; Port=5432; Database=RecapProject1Db; uid=postgres;pwd=123"));
+builder.Services.AddScoped<IProductService, ProductService>(); 
+builder.Services.AddScoped<IProductRepository,EfProductRepository>();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryRepository,EfCategoryRepository>();
 
 var app = builder.Build();
 
