@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Recap.Core\Recap.Core.csproj" />
+  </ItemGroup>
+
 </Project>
