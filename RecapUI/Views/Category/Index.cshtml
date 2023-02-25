@@ -1,7 +1,88 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
+<div id="app">
+    <div class="table-responsive m-2">
+        <table class="table table-striped table-hover table-bordered table-info">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Kategori Adı</th>
+                    <th scope="col">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(category, index) in categories">
+                    <th scope="row">{{ index }}</th>
+                    <td>{{ category.name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm m-2">Sil</button>
+                        <button type="button" class="btn btn-info btn-sm m-2">Güncelle</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Kategori Ekle
+    </button>
 
-<h1>Index</h1>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="categoryName" class="form-label">Kategori Adı</label>
+                            <input type="text" class="form-control" id="categoryName" v-model="name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" v-on:click="addCategory">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                id: "",
+                name: "",
+                categories: []
+            }
+        },
+        methods: {
+            addCategory() {
+                fetch("/Category/Add", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: this.name
+                    }),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                }).then(res => location.reload())
+                    .catch(err => console.log(err))
+            },
+            getCategories(){
+                fetch("/Category/List").then(res => res.json())
+                                        .then(data => this.categories = data)
+                                        .catch(err => console.log(err.message))
+            }
+        },
+        beforeMount(){
+            this.getCategories();
+        }
+    }).mount("#app");
+</script>
 
