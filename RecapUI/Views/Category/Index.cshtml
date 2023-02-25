@@ -16,7 +16,7 @@
                     <th scope="row">{{ index }}</th>
                     <td>{{ category.name }}</td>
                     <td>
-                        <button type="button" class="btn btn-danger btn-sm m-2">Sil</button>
+                        <button type="button" class="btn btn-danger btn-sm m-2" v-on:click="deleteCategory(category)">Sil</button>
                         <button type="button" class="btn btn-info btn-sm m-2">Güncelle</button>
                     </td>
                 </tr>
@@ -33,7 +33,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Kategori Ekle</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -45,13 +45,35 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                     <button type="button" class="btn btn-primary" v-on:click="addCategory">Kaydet</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<!-- Silme Uyarı Modal ı -->
+<div class="modal fade" id="warningModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Silme İşlemi</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Silmek istediğinize emin misiniz ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" id="btnDelete">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const { createApp } = Vue;
 
@@ -74,13 +96,29 @@
                 }).then(res => location.reload())
                     .catch(err => console.log(err))
             },
-            getCategories(){
+            getCategories() {
                 fetch("/Category/List").then(res => res.json())
-                                        .then(data => this.categories = data)
-                                        .catch(err => console.log(err.message))
+                    .then(data => this.categories = data)
+                    .catch(err => console.log(err.message))
+            },
+            deleteCategory(category) {
+                const modal = new bootstrap.Modal('#warningModal');
+                const modalToggle = document.getElementById('warningModal');
+                modal.show(modalToggle);
+                $("#btnDelete").click(function () {
+                    fetch("/Category/Delete", {
+                        method: "DELETE",
+                        body: JSON.stringify({
+                            id: category.id,
+                            name: category.name
+                        }),
+                        headers: { "Content-type": "application/json; charset=UTF-8" }
+                    }).then(res => location.reload())
+                        .catch(err => console.log(err));
+                });
             }
         },
-        beforeMount(){
+        beforeMount() {
             this.getCategories();
         }
     }).mount("#app");
