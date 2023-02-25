@@ -30,7 +30,7 @@ namespace Recap.Business.Concrete
 
         public List<Category> GetActives()
         {
-            return _categoryRepository.GetAll(x => x.Status == Status.Active).ToList();
+            return _categoryRepository.GetAll(x => x.Status == Status.Active || x.Status == Status.Updated).ToList();
         }
 
         public Category GetById(Guid id)
