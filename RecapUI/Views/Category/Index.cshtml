@@ -46,7 +46,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    <button type="button" class="btn btn-primary" v-on:click="addCategory">Kaydet</button>
+                    <button type="button" class="btn btn-primary" v-on:click="addCategory" v-if="id == ''">Kaydet</button>
+                    <button type="button" class="btn btn-outline-primary" v-on:click="updateCategory({id: id,name: name})" v-else>Kaydet</button>
                 </div>
             </div>
         </div>
@@ -130,6 +131,9 @@
                 modal.show(modalToggle);
                 this.id = category.id;
                 this.name = category.name;
+            },
+            updateCategory(category){
+                alert();
             }
         },
         beforeMount() {
