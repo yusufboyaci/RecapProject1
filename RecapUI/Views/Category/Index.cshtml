@@ -17,23 +17,23 @@
                     <td>{{ category.name }}</td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm m-2" v-on:click="deleteCategory(category)">Sil</button>
-                        <button type="button" class="btn btn-info btn-sm m-2">Güncelle</button>
+                        <button type="button" class="btn btn-info btn-sm m-2" v-on:click="getCategory(category)">Güncelle</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryModal" v-on:click="pressSave">
         Kategori Ekle
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Kategori Ekle</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Kategori {{ operation }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -82,10 +82,16 @@
             return {
                 id: "",
                 name: "",
-                categories: []
+                categories: [],
+                operation: "",
             }
         },
         methods: {
+            pressSave() {
+                this.operation = "Kaydet";
+                this.id = "";
+                this.name = "";
+            },
             addCategory() {
                 fetch("/Category/Add", {
                     method: "POST",
@@ -116,6 +122,14 @@
                     }).then(res => location.reload())
                         .catch(err => console.log(err));
                 });
+            },
+            getCategory(category) {
+                this.operation = "Güncelle";
+                const modal = new bootstrap.Modal('#categoryModal');
+                const modalToggle = document.getElementById('categoryModal');
+                modal.show(modalToggle);
+                this.id = category.id;
+                this.name = category.name;
             }
         },
         beforeMount() {
