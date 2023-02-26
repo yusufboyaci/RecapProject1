@@ -110,15 +110,11 @@
             },
             deleteCategory(category) {
                 const modal = new bootstrap.Modal('#warningModal');
-                const modalToggle = document.getElementById('warningModal');
-                modal.show(modalToggle);
+                modal.show();
                 $("#btnDelete").click(function () {
                     fetch("/Category/Delete", {
                         method: "DELETE",
-                        body: JSON.stringify({
-                            id: category.id,
-                            name: category.name
-                        }),
+                        body: JSON.stringify(category),
                         headers: { "Content-type": "application/json; charset=UTF-8" }
                     }).then(res => location.reload())
                         .catch(err => console.log(err));
@@ -127,8 +123,7 @@
             getCategory(category) {
                 this.operation = "Güncelle";
                 const modal = new bootstrap.Modal('#categoryModal');
-                const modalToggle = document.getElementById('categoryModal');
-                modal.show(modalToggle);
+                modal.show();
                 this.id = category.id;
                 this.name = category.name;
             },

@@ -1,31 +1,188 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-        </tr>
-    </tbody>
-</table>
+<div id="app">
+    <div class="table-responsive m-2">
+        <table class="table table-striped table-hover table-bordered table-danger">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ürün Adı</th>
+                    <th scope="col">Birim Fiyat</th>
+                    <th scope="col">Ünite Adı</th>
+                    <th scope="col">Stok</th>
+                    <th scope="col">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(product, index) in products">
+                    <th scope="row">{{ index }}</th>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.unitPrice }}</td>
+                    <td>{{ product.quantityPerUnit }}</td>
+                    <td>{{ product.unitsInStock }}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm m-2" v-on:click="deleteProduct(product)">Sil</button>
+                        <button type="button" class="btn btn-info btn-sm m-2" v-on:click="getProduct(product)">Güncelle</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal" v-on:click="pressSave">
+        Ürün Ekle
+    </button>
 
+    <!-- Modal -->
+    <div class="modal fade" id="productModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Ürün {{ operation }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Ürün Adı</label>
+                            <input type="text" class="form-control" id="productName" v-model="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="unitPrice" class="form-label">Birim Fiyatı</label>
+                            <input type="number" class="form-control" id="unitPrice" v-model="unitPrice">
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantityPerUnit" class="form-label">Ünite Adı</label>
+                            <input type="text" class="form-control" id="quantityPerUnit" v-model="quantityPerUnit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="unitsInStock" class="form-label">Stok</label>
+                            <input type="number" class="form-control" id="unitsInStock" v-model="unitsInStock">
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoryId" class="form-label">Kategori</label>
+                            <select id="categoryId" class="form-select" v-model="categoryId">
+                                <option v-for="category in categories" v-bind:value="category.id"> {{ category.name }}</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary" v-on:click="addProduct" v-if="id == ''">Kaydet</button>
+                    <button type="button" class="btn btn-outline-primary" v-on:click="updateProduct({id: id, categoryId: categoryId, name: name, unitPrice: unitPrice, quantityPerUnit: quantityPerUnit, unitsInStock: unitsInStock})" v-else>Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Silme Uyarı Modal ı -->
+<div class="modal fade" id="warningModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Silme İşlemi</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Silmek istediğinize emin misiniz ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" id="btnDelete">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const { createApp } = Vue;
+    createApp({
+        data() {
+            return {
+                id: "",
+                categoryId: "",
+                name: "",
+                unitPrice: 0,
+                quantityPerUnit: "",
+                unitsInStock: 0,
+                products: [],
+                categories: [],
+                operation: "",
+            }
+        },
+        methods: {
+            pressSave() {
+                this.operation = "Kaydet";
+                this.id = "";
+                this.categoryId = "";
+                this.name = "";
+                this.unitPrice = 0;
+                this.quantityPerUnit = "";
+                this.unitsInStock = 0;
+            },
+            addProduct() {
+                fetch("/Product/Add", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: this.name,
+                        unitPrice: this.unitPrice,
+                        quantityPerUnit: this.quantityPerUnit,
+                        unitsInStock: this.unitsInStock,
+                        categoryId: this.categoryId
+                    }),
+                    headers: { "Content-Type": "application/json; charset=UTF-8" }
+                }).then(res => location.reload())
+                    .catch(err => console.log(err));
+            },
+            getProducts() {
+                fetch("/Product/List").then(res => res.json())
+                    .then(data => this.products = data)
+                    .catch(err => console.log(err));
+            },
+            getCategories() {
+                fetch("/Category/List").then(res => res.json())
+                    .then(data => this.categories = data)
+                    .catch(err => console.log(err.message));
+            },
+            deleteProduct(product) {
+                const modal = new bootstrap.Modal('#warningModal');
+                modal.show();
+                $("#btnDelete").click(function () {
+                    fetch("/Product/Delete", {
+                        method: "DELETE",
+                        body: JSON.stringify(product),
+                        headers: { "Content-Type": "application/json; charset=UTF-8" }
+                    }).then(res => location.reload())
+                        .catch(err => console.log(err))
+                });
+            },
+            getProduct(product){
+                this.operation = "Güncelle";
+                const modal = new bootstrap.Modal('#productModal');
+                modal.show();
+                this.id = product.id;
+                this.categoryId = product.categoryId;
+                this.name = product.name;
+                this.unitPrice = product.unitPrice;
+                this.quantityPerUnit = product.quantityPerUnit;
+                this.unitsInStock = product.unitsInStock;
+            },
+            updateProduct(product){
+                fetch("/Product/Update",{
+                    method: "PUT",
+                    body: JSON.stringify(product),
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(res => location.reload())
+                  .catch(err => console.log(err))
+            }
+        },
+        beforeMount() {
+            this.getCategories();
+            this.getProducts();
+        }
+
+    }).mount('#app');
+</script>
