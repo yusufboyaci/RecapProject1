@@ -47,25 +47,30 @@
                     <form>
                         <div class="mb-3">
                             <label for="productName" class="form-label">Ürün Adı</label>
-                            <input type="text" class="form-control" id="productName" v-model="name">
+                            <input type="text" class="form-control" v-bind:class="{ 'is-invalid': errorControl}" id="productName" v-model="name">
+                            <span class="invalid-feedback" v-if="errorControl">Lütfen boş geçmeyiniz.</span>
                         </div>
                         <div class="mb-3">
                             <label for="unitPrice" class="form-label">Birim Fiyatı</label>
-                            <input type="number" class="form-control" id="unitPrice" v-model="unitPrice">
+                            <input type="number" class="form-control" v-bind:class="{ 'is-invalid': errorControl}" id="unitPrice" v-model="unitPrice">
+                            <span class="invalid-feedback" v-if="errorControl">Lütfen negatif sayı vermeyiniz.</span>
                         </div>
                         <div class="mb-3">
                             <label for="quantityPerUnit" class="form-label">Ünite Adı</label>
-                            <input type="text" class="form-control" id="quantityPerUnit" v-model="quantityPerUnit">
+                            <input type="text" class="form-control" v-bind:class="{ 'is-invalid': errorControl}" id="quantityPerUnit" v-model="quantityPerUnit">
+                            <span class="invalid-feedback" v-if="errorControl">Lütfen boş geçmeyiniz.</span>
                         </div>
                         <div class="mb-3">
                             <label for="unitsInStock" class="form-label">Stok</label>
-                            <input type="number" class="form-control" id="unitsInStock" v-model="unitsInStock">
+                            <input type="number" class="form-control" v-bind:class="{ 'is-invalid': errorControl}" id="unitsInStock" v-model="unitsInStock">
+                            <span class="invalid-feedback" v-if="errorControl">Lütfen negatif sayı vermeyiniz.</span>
                         </div>
                         <div class="mb-3">
                             <label for="categoryId" class="form-label">Kategori</label>
-                            <select id="categoryId" class="form-select" v-model="categoryId">
+                            <select id="categoryId" class="form-select" v-bind:class="{ 'is-invalid': errorControl}" v-model="categoryId">
                                 <option v-for="category in categories" v-bind:value="category.id"> {{ category.name }}</option>
                             </select>
+                            <span class="invalid-feedback" v-if="errorControl">Lütfen bir kategori seçiniz.</span>
                         </div>
                     </form>
                 </div>
@@ -111,6 +116,7 @@
                 products: [],
                 categories: [],
                 operation: "",
+                errorControl: false,
             }
         },
         methods: {
@@ -124,18 +130,27 @@
                 this.unitsInStock = 0;
             },
             addProduct() {
-                fetch("/Product/Add", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        name: this.name,
-                        unitPrice: this.unitPrice,
-                        quantityPerUnit: this.quantityPerUnit,
-                        unitsInStock: this.unitsInStock,
-                        categoryId: this.categoryId
-                    }),
-                    headers: { "Content-Type": "application/json; charset=UTF-8" }
-                }).then(res => location.reload())
-                    .catch(err => console.log(err));
+                if (this.categoryId === "" || this.name === "" || this.quantityPerUnit === "") {
+                    this.errorControl = true;
+                }
+                else if (this.unitPrice < 0 || this.unitsInStock < 0) {
+                    this.errorControl = true;
+                }
+                else {
+                    this.errorControl = false;
+                    fetch("/Product/Add", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            name: this.name,
+                            unitPrice: this.unitPrice,
+                            quantityPerUnit: this.quantityPerUnit,
+                            unitsInStock: this.unitsInStock,
+                            categoryId: this.categoryId
+                        }),
+                        headers: { "Content-Type": "application/json; charset=UTF-8" }
+                    }).then(res => location.reload())
+                        .catch(err => console.log(err));
+                }
             },
             getProducts() {
                 fetch("/Product/List").then(res => res.json())
@@ -159,7 +174,7 @@
                         .catch(err => console.log(err))
                 });
             },
-            getProduct(product){
+            getProduct(product) {
                 this.operation = "Güncelle";
                 const modal = new bootstrap.Modal('#productModal');
                 modal.show();
@@ -170,13 +185,13 @@
                 this.quantityPerUnit = product.quantityPerUnit;
                 this.unitsInStock = product.unitsInStock;
             },
-            updateProduct(product){
-                fetch("/Product/Update",{
+            updateProduct(product) {
+                fetch("/Product/Update", {
                     method: "PUT",
                     body: JSON.stringify(product),
                     headers: { 'Content-Type': 'application/json; charset=UTF-8' }
                 }).then(res => location.reload())
-                  .catch(err => console.log(err))
+                    .catch(err => console.log(err))
             }
         },
         beforeMount() {
