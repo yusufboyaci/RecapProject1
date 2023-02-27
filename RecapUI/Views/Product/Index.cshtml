@@ -137,22 +137,6 @@
                 else if (this.unitPrice < 0 || this.unitsInStock < 0) {
                     this.errorControl = true;
                 }
-                //if (this.categoryId === "") {
-                //    this.errorControl = true;
-
-                //} else if (this.name === "") {
-                //    this.errorControl = true;
-
-                //} else if (this.quantityPerUnit === "") {
-                //    this.errorControl = true;
-
-                //} else if (this.unitPrice < 0) {
-                //    this.errorControl = true;
-
-                //} else if (this.unitsInStock < 0) {
-                //    this.errorControl = true;
-
-                //}
                 else {
                     this.errorControl = false;
                     fetch("/Product/Add", {
@@ -204,12 +188,20 @@
                 this.unitsInStock = product.unitsInStock;
             },
             updateProduct(product) {
-                fetch("/Product/Update", {
-                    method: "PUT",
-                    body: JSON.stringify(product),
-                    headers: { 'Content-Type': 'application/json; charset=UTF-8' }
-                }).then(res => location.reload())
-                    .catch(err => console.log(err))
+                if (this.categoryId === "" || this.name === "" || this.quantityPerUnit === "") {
+                    this.errorControl = true;
+                }
+                else if (this.unitPrice < 0 || this.unitsInStock < 0) {
+                    this.errorControl = true;
+                } else {
+
+                    fetch("/Product/Update", {
+                        method: "PUT",
+                        body: JSON.stringify(product),
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+                    }).then(res => location.reload())
+                        .catch(err => console.log(err))
+                }
             }
         },
         beforeMount() {
