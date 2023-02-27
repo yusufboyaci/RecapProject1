@@ -128,6 +128,7 @@
                 this.unitPrice = 0;
                 this.quantityPerUnit = "";
                 this.unitsInStock = 0;
+                this.errorControl = false;
             },
             addProduct() {
                 if (this.categoryId === "" || this.name === "" || this.quantityPerUnit === "") {
@@ -136,6 +137,22 @@
                 else if (this.unitPrice < 0 || this.unitsInStock < 0) {
                     this.errorControl = true;
                 }
+                //if (this.categoryId === "") {
+                //    this.errorControl = true;
+
+                //} else if (this.name === "") {
+                //    this.errorControl = true;
+
+                //} else if (this.quantityPerUnit === "") {
+                //    this.errorControl = true;
+
+                //} else if (this.unitPrice < 0) {
+                //    this.errorControl = true;
+
+                //} else if (this.unitsInStock < 0) {
+                //    this.errorControl = true;
+
+                //}
                 else {
                     this.errorControl = false;
                     fetch("/Product/Add", {
@@ -175,6 +192,7 @@
                 });
             },
             getProduct(product) {
+                this.errorControl = false;
                 this.operation = "Güncelle";
                 const modal = new bootstrap.Modal('#productModal');
                 modal.show();
