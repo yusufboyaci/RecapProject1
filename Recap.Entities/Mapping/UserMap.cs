@@ -15,6 +15,7 @@ namespace Recap.Entities.Mapping
         {
             builder.ToTable("users");
             builder.Property(x => x.Username).HasMaxLength(50).IsRequired(true);
+            builder.Property(x => x.Password).IsRequired(true);
             builder.Property(x => x.Name).HasMaxLength(50).IsRequired(false);
             builder.Property(x => x.Surname).HasMaxLength(50).IsRequired(false);
             builder.Property(x => x.Country).HasMaxLength(50).IsRequired(false);
