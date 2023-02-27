@@ -25,10 +25,12 @@ namespace Recap.DataAccess.EntityFramework.Context
         }
         public DbSet<Product>? Products { get; set; }
         public DbSet<Category>? Categories { get; set; }
+        public DbSet<User>? Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CategoryMap());
             modelBuilder.ApplyConfiguration(new ProductMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
             base.OnModelCreating(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//Bundan sonra databse oluşturmak için bu yöntemi kullan DbContextFactory ile yapma!!!

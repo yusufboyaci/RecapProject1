@@ -47,8 +47,9 @@
                     <form>
                         <div class="mb-3">
                             <label for="productName" class="form-label">Ürün Adı</label>
-                            <input type="text" class="form-control" v-bind:class="{ 'is-invalid': errorControl}" id="productName" v-model="name">
+                            <input type="text" class="form-control" v-bind:class="{ 'is-invalid': errorControl || characterControl }" id="productName" v-model="name">
                             <span class="invalid-feedback" v-if="errorControl">Lütfen boş geçmeyiniz.</span>
+                            <span class="invalid-feedback" v-if="characterControl">Lütfen 50 karakterden fazla değer girmeyiniz.</span>
                         </div>
                         <div class="mb-3">
                             <label for="unitPrice" class="form-label">Birim Fiyatı</label>
@@ -57,8 +58,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="quantityPerUnit" class="form-label">Ünite Adı</label>
-                            <input type="text" class="form-control" v-bind:class="{ 'is-invalid': errorControl}" id="quantityPerUnit" v-model="quantityPerUnit">
+                            <input type="text" class="form-control" v-bind:class="{ 'is-invalid': errorControl || characterControl }" id="quantityPerUnit" v-model="quantityPerUnit">
                             <span class="invalid-feedback" v-if="errorControl">Lütfen boş geçmeyiniz.</span>
+                            <span class="invalid-feedback" v-if="characterControl">Lütfen 50 karakterden fazla değer girmeyiniz.</span>
                         </div>
                         <div class="mb-3">
                             <label for="unitsInStock" class="form-label">Stok</label>
@@ -117,6 +119,7 @@
                 categories: [],
                 operation: "",
                 errorControl: false,
+                characterControl: false
             }
         },
         methods: {
@@ -129,16 +132,21 @@
                 this.quantityPerUnit = "";
                 this.unitsInStock = 0;
                 this.errorControl = false;
+                this.characterControl = false;
             },
             addProduct() {
                 if (this.categoryId === "" || this.name === "" || this.quantityPerUnit === "") {
                     this.errorControl = true;
+                }
+                else if (this.name.length > 50 || this.quantityPerUnit.length > 50) {
+                    this.characterControl = true;
                 }
                 else if (this.unitPrice < 0 || this.unitsInStock < 0) {
                     this.errorControl = true;
                 }
                 else {
                     this.errorControl = false;
+                    this.characterControl = false;
                     fetch("/Product/Add", {
                         method: "POST",
                         body: JSON.stringify({
@@ -177,6 +185,7 @@
             },
             getProduct(product) {
                 this.errorControl = false;
+                this.characterControl = false;
                 this.operation = "Güncelle";
                 const modal = new bootstrap.Modal('#productModal');
                 modal.show();
@@ -191,10 +200,14 @@
                 if (this.categoryId === "" || this.name === "" || this.quantityPerUnit === "") {
                     this.errorControl = true;
                 }
+                else if (this.name.length > 50 || this.quantityPerUnit.length > 50) {
+                    this.characterControl = true;
+                }
                 else if (this.unitPrice < 0 || this.unitsInStock < 0) {
                     this.errorControl = true;
                 } else {
-
+                    this.errorControl = false;
+                    this.characterControl = false;
                     fetch("/Product/Update", {
                         method: "PUT",
                         body: JSON.stringify(product),

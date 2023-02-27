@@ -13,8 +13,9 @@ namespace Recap.Entities.Mapping
     {
         public override void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.ToTable("products");////Postgre SQL küçük büyük harf duyarlı olduğu için eklendi
+            builder.ToTable("products");//Postgre SQL küçük büyük harf duyarlı olduğu için eklendi
             builder.Property(x => x.Name).HasMaxLength(50).IsRequired(true);
+            builder.Property(x => x.QuantityPerUnit).HasMaxLength(50).IsRequired(true);
             builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId);
             base.Configure(builder);
         }
