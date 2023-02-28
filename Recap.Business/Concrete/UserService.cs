@@ -26,6 +26,7 @@ namespace Recap.Business.Concrete
 
         public bool CheckCredential(string username, string password)
         {
+            password = BCrypt.Net.BCrypt.HashPassword(password);
             return _userRepository.CheckCredential(username, password);
         }
 

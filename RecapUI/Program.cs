@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Recap.Business.Abstract;
 using Recap.Business.Concrete;
@@ -19,6 +20,16 @@ builder.Services.AddScoped<ICategoryRepository,EfCategoryRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
+{
+    o.Cookie.Name = "RecapProject1Cookie";
+    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    o.Cookie.HttpOnly = true;
+    o.LoginPath = "/login/login";
+    o.LogoutPath = "/home/index";
+    o.AccessDeniedPath = "/home/index";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,6 +49,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Login}/{id?}");
 
 app.Run();

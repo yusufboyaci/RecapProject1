@@ -1,0 +1,134 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+<style>
+
+</style>
+<h2 class="text-info-emphasis text-capitalize m-5">ürün kategori otomasyon sistemi</h2>
+<div id="app">
+    <form v-if="register" class="m-5">
+        <div class="mb-3">
+            <label for="username" class="form-label">Kullanıcı Adı</label>
+            <input id="username" type="text" class="form-control" v-model="username" />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Şifre</label>
+            <input id="password" type="password" class="form-control" v-model="password" />
+        </div>
+        <button type="button" class="btn btn-primary" v-on:click="login">Giriş</button>
+        <p class="text-primary-emphasis">Eğer üye değilseniz <span class="link-info" v-on:click="toggle" style="cursor:pointer">Üye Ol</span> tıklayınız...</p>
+    </form>
+
+    <form v-else class="m-5">
+        <div class="mb-3">
+            <label class="form-label">Kullanıcı Adı</label>
+            <input type="text" class="form-control" v-model="username" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Şifre</label>
+            <input type="password" class="form-control" v-model="password" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ad</label>
+            <input type="text" class="form-control" v-model="name" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Soyadınız</label>
+            <input type="text" class="form-control" v-model="surname" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Yaşınız</label>
+            <input type="number" class="form-control" v-model="age" />
+        </div>
+        <div class="mb-3 form-check">
+            <input class="form-check-input" type="radio" id="male" name="gender">
+            <label class="form-check-label" for="male">Erkek</label>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="radio" class="form-check-input" id="female" name="gender">
+            <label class="form-check-label" for="female">Bayan</label>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ülke</label>
+            <input type="text" class="form-control" v-model="country" />
+        </div>
+        <button type="button" class="btn btn-success" v-on:click="signUp">Kayıt Ol</button>
+        <p class="text-primary-emphasis">Üye misiniz? <span class="link-info" v-on:click="toggle" style="cursor:pointer">Giriş Yap</span></p>
+    </form>
+
+
+
+    <!-- Uyarı modal -->
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ message }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const { createApp } = Vue;
+    createApp({
+        data() {
+            return {
+                username: "",
+                password: "",
+                message: "",
+                register: false,
+                name: "",
+                surname: "",
+                age: 0,
+                country: "",
+            }
+        },
+        methods: {
+            login() {
+                fetch("login/login", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: this.username,
+                        password: this.password
+                    }),
+                    headers: { "Content-Type": "application/json; charset=UTF-8" }
+                }).then(res => {
+                    if (res.data) {
+                        location.href = "/home/index";
+                    } else {
+                        const modal = new bootstrap.Modal("#warningModal");
+                        this.message = "Kullanıcı adınız veya şifreniz hatalıdır.";
+                        modal.show();
+                    }
+                })
+            },
+            signUp() {
+                fetch("user/add", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: this.username,
+                        password: this.password
+                    }),
+                    headers: { "Content-Type": "application/json; charset=UTF-8" }
+                }).then(res => {
+                    const modal = new bootstrap.Modal("#warningModal");
+                    this.message = "Üyelik işlemi başarıyla gerçekleşmiştir.";
+                    modal.show();
+                    location.reload();
+                })
+            },
+            toggle() {
+                this.register = !this.register
+            }
+        }
+    }).mount("#app");
+</script>
