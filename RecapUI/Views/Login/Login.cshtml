@@ -121,13 +121,14 @@
                         name: this.name,
                         surname: this.surname,
                         age: this.age,
+                        gender: this.genderValue,
                         country: this.country,
                     }),
                     headers: { "Content-Type": "application/json; charset=UTF-8" }
                 }).then(res => {
                     const modal = new bootstrap.Modal("#warningModal");
                     this.message = "Üyelik işlemi başarıyla gerçekleşmiştir.";
-                    modal.show();
+                   // modal.show();
                     location.reload();
                 })
             },

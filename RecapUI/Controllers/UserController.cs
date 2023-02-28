@@ -43,7 +43,7 @@ namespace RecapUI.Controllers
                 _userService.Add(user);
                 return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
