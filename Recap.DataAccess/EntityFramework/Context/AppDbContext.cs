@@ -33,7 +33,7 @@ namespace Recap.DataAccess.EntityFramework.Context
             modelBuilder.ApplyConfiguration(new UserMap());
             base.OnModelCreating(modelBuilder);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//Bundan sonra databse oluşturmak için bu yöntemi kullan DbContextFactory ile yapma!!!
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//Bundan sonra database oluşturmak için bu yöntemi kullan DbContextFactory ile yapma!!!
         {
             optionsBuilder.UseNpgsql("Server=localhost; Port=5432; Database=RecapProject1Db; uid=postgres;pwd=123", b => b.MigrationsAssembly("RecapUI"));
             base.OnConfiguring(optionsBuilder);

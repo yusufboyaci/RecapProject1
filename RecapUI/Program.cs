@@ -16,6 +16,9 @@ builder.Services.AddScoped<IProductRepository,EfProductRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository,EfCategoryRepository>();
 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, EfUserRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

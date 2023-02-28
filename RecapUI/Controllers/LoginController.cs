@@ -8,7 +8,7 @@ namespace RecapUI.Controllers
         [HttpGet]
         public IActionResult Login() => View(); 
         [HttpPost("Login")]
-        public IActionResult Login(LoginVM login)
+        public IActionResult Login([FromBody]LoginVM login)
         {
             if (true)
             {

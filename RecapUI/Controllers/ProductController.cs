@@ -18,7 +18,7 @@ namespace RecapUI.Controllers
             {
                 return Ok(_productService.GetActives());
             }
-            catch
+            catch(Exception)
             {
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
@@ -30,7 +30,7 @@ namespace RecapUI.Controllers
             {
                 return Ok(_productService.GetById(id));
             }
-            catch
+            catch (Exception)
             {
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
@@ -43,7 +43,7 @@ namespace RecapUI.Controllers
                 _productService.Add(product);
                 return NoContent();
             }
-            catch
+            catch (Exception)
             {
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
@@ -56,7 +56,7 @@ namespace RecapUI.Controllers
                 _productService.Update(product);
                 return NoContent();
             }
-            catch
+            catch (Exception)
             {
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
@@ -69,7 +69,7 @@ namespace RecapUI.Controllers
                 _productService.Delete(product);
                 return NoContent();
             }
-            catch
+            catch (Exception)
             {
                 return BadRequest("Beklenmedik bir hata oluştu");
             }

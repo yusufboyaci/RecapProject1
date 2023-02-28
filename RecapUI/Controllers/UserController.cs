@@ -4,19 +4,19 @@ using Recap.Entities;
 
 namespace RecapUI.Controllers
 {
-    public class CategoryController : Controller
+    public class UserController : Controller
     {
-        private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        IUserService _userService;
+        public UserController(IUserService userService)
         {
-            _categoryService = categoryService;
+            _userService = userService;
         }
         [HttpGet("[controller]/List")]
         public IActionResult List()
         {
             try
             {
-                return Ok(_categoryService.GetActives());
+                return Json(_userService.GetActives());
             }
             catch (Exception)
             {
@@ -28,7 +28,7 @@ namespace RecapUI.Controllers
         {
             try
             {
-                return Ok(_categoryService.GetById(id));
+                return Json(_userService.GetById(id));
             }
             catch (Exception)
             {
@@ -36,11 +36,11 @@ namespace RecapUI.Controllers
             }
         }
         [HttpPost("[controller]/Add")]
-        public IActionResult Add([FromBody] Category category)
+        public IActionResult Add([FromBody] User user)
         {
             try
             {
-                _categoryService.Add(category);
+                _userService.Add(user);
                 return NoContent();
             }
             catch (Exception)
@@ -48,13 +48,15 @@ namespace RecapUI.Controllers
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
         }
+
         [HttpPut("[controller]/Update")]
-        public IActionResult Update([FromBody] Category category)
+        public IActionResult Update([FromBody] User user)
         {
             try
             {
-                _categoryService.Update(category);
+                _userService.Update(user);
                 return NoContent();
+
             }
             catch (Exception)
             {
@@ -62,11 +64,11 @@ namespace RecapUI.Controllers
             }
         }
         [HttpDelete("[controller]/Delete")]
-        public IActionResult Delete([FromBody] Category category)
+        public IActionResult Delete([FromBody] User user)
         {
             try
             {
-                _categoryService.Delete(category);
+                _userService.Delete(user);
                 return NoContent();
             }
             catch (Exception)
