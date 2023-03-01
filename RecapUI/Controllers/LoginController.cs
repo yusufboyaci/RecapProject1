@@ -18,9 +18,9 @@ namespace RecapUI.Controllers
         [HttpPost("[controller]/Login")]
         public async Task<IActionResult> Login([FromBody] LoginVM login)
         {
-            if (login.Username != null || login.Password != null)
+            if (_userService.CheckCredential(login.Username, login.Password))
             {
-                if (_userService.CheckCredential(login.Username, login.Password))
+                if (login.Username != null || login.Password != null)
                 {
                     List<Claim> claims = new List<Claim>()
                     {
@@ -34,11 +34,11 @@ namespace RecapUI.Controllers
             }
             return Json(false);
         }
-        [HttpGet]
+        [HttpGet("[controller]")]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("login", "login");
         }
     }
 }

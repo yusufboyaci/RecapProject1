@@ -11,11 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql("Server=localhost; Port=5432; Database=RecapProject1Db; uid=postgres;pwd=123"));
-builder.Services.AddScoped<IProductService, ProductService>(); 
-builder.Services.AddScoped<IProductRepository,EfProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, EfProductRepository>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ICategoryRepository,EfCategoryRepository>();
+builder.Services.AddScoped<ICategoryRepository, EfCategoryRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
@@ -26,8 +26,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     o.Cookie.HttpOnly = true;
     o.LoginPath = "/login/login";
-    //o.LogoutPath = "/home/index";
-   // o.AccessDeniedPath = "/home/index";
+    o.LogoutPath = "/login/login";
+    o.AccessDeniedPath = "/home/index";
 });
 
 var app = builder.Build();
@@ -44,7 +44,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
