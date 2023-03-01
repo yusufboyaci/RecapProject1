@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(product, index) in products">
+                <tr v-for="(product, index) in displayedPosts">
                     <th scope="row">{{ index }}</th>
                     <td>{{ product.name }}</td>
                     <td>{{ product.unitPrice }}</td>
@@ -34,7 +34,30 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal" v-on:click="pressSave">
         Ürün Ekle
     </button>
-
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                @*<button type="button" class="page-link" aria-label="Previous" v-if="current_page != 1" v-on:click="current_page--">
+                    <span aria-hidden="true">&laquo;</span>
+                </button> *@
+                <button type="button" class="page-link" aria-label="Previous" v-on:click="current_page--">
+                    <span aria-hidden="true">&laquo;</span>
+                </button>
+            </li>
+            <li class="page-item">
+                <button type="button" class="page-link" v-for="pageNumber in pages.slice(current_page-1, current_page+5)" v-on:click="current_page = pageNumber">{{ pageNumber }}</button>
+            </li>
+            <li class="page-item">
+              @*  <button type="button" class="page-link" aria-label="Next" v-if="current_page < pages.length" v-on:click="current_page++">
+                    <span aria-hidden="true">&raquo;</span>
+                </button> *@
+                <button type="button" class="page-link" aria-label="Next" v-on:click="current_page++">
+                    <span aria-hidden="true">&raquo;</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
     <!-- Modal -->
     <div class="modal fade" id="productModal">
         <div class="modal-dialog">
@@ -119,10 +142,36 @@
                 categories: [],
                 operation: "",
                 errorControl: false,
-                characterControl: false
+                characterControl: false,
+                pages: [],
+                current_page: 1,
+                records_per_page: 5,
             }
         },
+        watch: {
+            products() {
+                this.setPage();
+            }
+        },
+        computed: {
+            displayedPosts() {
+                return this.paginate(this.products);
+            },
+        },
         methods: {
+            setPage() {
+                let numberOfPages = Math.ceil(this.products.length / this.records_per_page);
+                for (let i = 1; i <= numberOfPages; i++) {
+                    this.pages.push(i);
+                }
+            },
+            paginate(posts) {
+                let page = this.current_page;
+                let records_per_page = this.records_per_page;
+                let from = (page * records_per_page) - records_per_page;
+                let to = (page * records_per_page);
+                return posts.slice(from, to);
+            },
             pressSave() {
                 this.operation = "Kaydet";
                 this.id = "";
