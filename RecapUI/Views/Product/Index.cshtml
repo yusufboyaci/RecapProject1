@@ -30,34 +30,29 @@
             </tbody>
         </table>
     </div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal" v-on:click="pressSave">
-        Ürün Ekle
-    </button>
     <!-- Pagination -->
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="m-2">
         <ul class="pagination">
             <li class="page-item">
-                @*<button type="button" class="page-link" aria-label="Previous" v-if="current_page != 1" v-on:click="current_page--">
-                    <span aria-hidden="true">&laquo;</span>
-                </button> *@
-                <button type="button" class="page-link" aria-label="Previous" v-on:click="current_page--">
+                <button type="button" class="page-link" aria-label="Previous" v-if="current_page != 1" v-on:click="current_page--">
                     <span aria-hidden="true">&laquo;</span>
                 </button>
             </li>
-            <li class="page-item">
-                <button type="button" class="page-link" v-for="pageNumber in pages.slice(current_page-1, current_page+5)" v-on:click="current_page = pageNumber">{{ pageNumber }}</button>
+            <li class="page-item" v-for="pageNumber in pages.slice(current_page-1, current_page+5)">
+                <button type="button" class="page-link" v-on:click="current_page = pageNumber">{{ pageNumber }}</button>
             </li>
             <li class="page-item">
-              @*  <button type="button" class="page-link" aria-label="Next" v-if="current_page < pages.length" v-on:click="current_page++">
-                    <span aria-hidden="true">&raquo;</span>
-                </button> *@
-                <button type="button" class="page-link" aria-label="Next" v-on:click="current_page++">
+                <button type="button" class="page-link" aria-label="Next" v-if="current_page < pages.length" v-on:click="current_page++">
                     <span aria-hidden="true">&raquo;</span>
                 </button>
             </li>
         </ul>
     </nav>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#productModal" v-on:click="pressSave">
+        Ürün Ekle
+    </button>
+    
     <!-- Modal -->
     <div class="modal fade" id="productModal">
         <div class="modal-dialog">
@@ -146,6 +141,7 @@
                 pages: [],
                 current_page: 1,
                 records_per_page: 5,
+                searchText: "",
             }
         },
         watch: {

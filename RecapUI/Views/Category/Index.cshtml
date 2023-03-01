@@ -12,7 +12,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(category, index) in categories">
+                <tr v-for="(category, index) in filtered">
                     <th scope="row">{{ index }}</th>
                     <td>{{ category.name }}</td>
                     <td>
@@ -87,6 +87,7 @@
                 categories: [],
                 operation: "",
                 errorControl: false,
+                searchText: "",
             }
         },
         methods: {
@@ -147,6 +148,11 @@
                     }).then(res => location.reload())
                         .catch(err => console.log(err));
                 }
+            }
+        },
+        computed:{
+            filtered(){
+                return this.categories.filter(x => x.name.match(this.searchText));
             }
         },
         beforeMount() {
