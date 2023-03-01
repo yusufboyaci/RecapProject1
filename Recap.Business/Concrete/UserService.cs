@@ -37,6 +37,11 @@ namespace Recap.Business.Concrete
             return false;
         }
 
+        public bool CheckCredential(string username)
+        {
+            return _userRepository.CheckCredential(username);
+        }
+
         public void Delete(User user)
         {
             _userRepository.Delete(user);

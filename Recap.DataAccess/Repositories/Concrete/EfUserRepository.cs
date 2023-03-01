@@ -22,7 +22,7 @@ namespace Recap.DataAccess.Repositories.Concrete
             return Any(x => x.Username == username && x.Password == password);
         }
         /// <summary>
-        /// ash leme olmadan kullanıcı adı kontrolünü yapar. Bu method kullanılmıyor.
+        /// ash leme olmadan kullanıcı adı kontrolünü yapar.
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>

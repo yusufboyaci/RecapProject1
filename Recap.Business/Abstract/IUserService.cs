@@ -15,5 +15,6 @@ namespace Recap.Business.Abstract
         void Update(User user);
         void Delete(User user);
         bool CheckCredential(string username, string password);
+        bool CheckCredential(string username);
     }
 }

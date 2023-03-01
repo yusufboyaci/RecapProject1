@@ -105,17 +105,20 @@
                     }),
                     headers: { "Content-Type": "application/json; charset=UTF-8" }
                 }).then(response => response.json())//veri çekeceğin zaman yazmak zorundasın
-                .then(res => {
-                    if (res) {
-                        location.href = "/home/index";
-                    } else {
-                        const modal = new bootstrap.Modal("#warningModal");
-                        this.message = "Kullanıcı adınız veya şifreniz hatalıdır.";
-                        this.modalTitle = "Uyarı";
-                        this.className = "text-danger";
-                        modal.show();
-                    }
-                })
+                    .then(res => {
+                        if (res) {
+                            location.href = "/home/index";
+                        } else {
+                            const modal = new bootstrap.Modal("#warningModal");
+                            this.message = "Kullanıcı adınız veya şifreniz hatalıdır.";
+                            this.modalTitle = "Uyarı";
+                            this.className = "text-danger";
+                            modal.show();
+                            $("#btnWarningOk").click(function () {
+                                modal.hide();
+                            });
+                        }
+                    })
             },
             signUp() {
                 fetch("/User/Add", {
@@ -130,18 +133,30 @@
                         country: this.country,
                     }),
                     headers: { "Content-Type": "application/json; charset=UTF-8" }
-                }).then(res => {
-                    const modal = new bootstrap.Modal("#warningModal");
-                    this.message = "Üyelik işlemi başarıyla gerçekleşmiştir.";
-                    this.modalTitle = "Üye Ol";
-                    this.className = "text-success-emphasis";
-                    modal.show();
-                    // let vm = this;//bu kod vue yi içeri aktarmak için kullanılır.
-                    $("#btnWarningOk").click(function () {
-                        location.reload();
-                        //vm.register = true;
+                }).then(response => response.json())//veri çekeceğin zaman yazmak zorundasın
+                    .then(data => {
+                        if (data) {
+                            const modal = new bootstrap.Modal("#warningModal");
+                            this.message = "Üyelik işlemi başarıyla gerçekleşmiştir.";
+                            this.modalTitle = "Üye Ol";
+                            this.className = "text-success-emphasis";
+                            modal.show();
+                            // let vm = this;//bu kod vue yi içeri aktarmak için kullanılır.
+                            $("#btnWarningOk").click(function () {
+                                location.reload();
+                                //vm.register = true;
+                            })
+                        } else {
+                            const modal = new bootstrap.Modal("#warningModal");
+                            this.message = "Böyle bir kullanıcı adı ve şifre bulunmaktadır. Lütfen farklı bir kullanıcı giriniz!";
+                            this.modalTitle = "Uyarı";
+                            this.className = "text-danger";
+                            modal.show();
+                            $("#btnWarningOk").click(function () {
+                                modal.hide();
+                            });
+                        }
                     })
-                })
             },
             toggle() {
                 this.register = !this.register

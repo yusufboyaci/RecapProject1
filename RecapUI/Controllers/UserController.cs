@@ -5,7 +5,7 @@ using Recap.Entities;
 
 namespace RecapUI.Controllers
 {
-    
+
     public class UserController : Controller
     {
         IUserService _userService;
@@ -44,8 +44,15 @@ namespace RecapUI.Controllers
         {
             try
             {
-                _userService.Add(user);
-                return NoContent();
+                if (_userService.CheckCredential(user.Username))
+                {
+                    return Json(false);
+                }
+                else
+                {
+                    _userService.Add(user);
+                    return Json(true);
+                }
             }
             catch (Exception)
             {
