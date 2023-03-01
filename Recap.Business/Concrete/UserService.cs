@@ -26,8 +26,15 @@ namespace Recap.Business.Concrete
 
         public bool CheckCredential(string username, string password)
         {
-            password = BCrypt.Net.BCrypt.HashPassword(password);
-            return _userRepository.CheckCredential(username, password);
+            foreach (User item in GetActives().Where(x => x.Username == username))
+            {
+                bool passwordControl = BCrypt.Net.BCrypt.Verify(password, item.Password);
+                if (passwordControl)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void Delete(User user)

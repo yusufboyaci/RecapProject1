@@ -10,5 +10,6 @@ namespace Recap.DataAccess.Repositories.Abstract
     public interface IUserRepository : IEntityRepository<User>
     {
         bool CheckCredential(string username, string password);
+        bool CheckCredential(string username);
     }
 }
