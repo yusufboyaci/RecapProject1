@@ -104,8 +104,9 @@
                         password: this.password
                     }),
                     headers: { "Content-Type": "application/json; charset=UTF-8" }
-                }).then(res => {
-                    if (res.data) {
+                }).then(response => response.json())//veri çekeceğin zaman yazmak zorundasın
+                .then(res => {
+                    if (res) {
                         location.href = "/home/index";
                     } else {
                         const modal = new bootstrap.Modal("#warningModal");
