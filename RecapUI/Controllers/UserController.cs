@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Recap.Business.Abstract;
 using Recap.Entities;
 
 namespace RecapUI.Controllers
 {
+    
     public class UserController : Controller
     {
         IUserService _userService;
@@ -11,6 +13,7 @@ namespace RecapUI.Controllers
         {
             _userService = userService;
         }
+        [Authorize]
         [HttpGet("[controller]/List")]
         public IActionResult List()
         {
@@ -23,6 +26,7 @@ namespace RecapUI.Controllers
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
         }
+        [Authorize]
         [HttpGet("[controller]/Get")]
         public IActionResult Get(Guid id)
         {
@@ -48,7 +52,7 @@ namespace RecapUI.Controllers
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
         }
-
+        [Authorize]
         [HttpPut("[controller]/Update")]
         public IActionResult Update([FromBody] User user)
         {
@@ -63,6 +67,7 @@ namespace RecapUI.Controllers
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
         }
+        [Authorize]
         [HttpDelete("[controller]/Delete")]
         public IActionResult Delete([FromBody] User user)
         {
@@ -76,6 +81,7 @@ namespace RecapUI.Controllers
                 return BadRequest("Beklenmedik bir hata oluştu");
             }
         }
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {

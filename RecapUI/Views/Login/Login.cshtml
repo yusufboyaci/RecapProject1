@@ -97,7 +97,7 @@
         },
         methods: {
             login() {
-                fetch("login/login", {
+                fetch("/Login/Login", {
                     method: "POST",
                     body: JSON.stringify({
                         username: this.username,
@@ -118,7 +118,7 @@
                 })
             },
             signUp() {
-                fetch("user/add", {
+                fetch("/User/Add", {
                     method: "POST",
                     body: JSON.stringify({
                         username: this.username,

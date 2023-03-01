@@ -25,9 +25,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     o.Cookie.Name = "RecapProject1Cookie";
     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     o.Cookie.HttpOnly = true;
-    o.LoginPath = "/login/login";
-    o.LogoutPath = "/login/login";
-    o.AccessDeniedPath = "/home/index";
+    //o.LoginPath = "/login/login";
+    //o.LogoutPath = "/login/login";
+    //o.AccessDeniedPath = "/login/login";
 });
 
 var app = builder.Build();
