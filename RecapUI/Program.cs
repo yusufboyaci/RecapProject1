@@ -44,7 +44,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
+app.UseAuthentication();//User.Identity.IsAuthenticated çalýþmasý için gereklidir.
 app.UseAuthorization();
 
 app.MapControllerRoute(
